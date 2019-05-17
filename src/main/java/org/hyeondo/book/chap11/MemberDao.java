@@ -17,7 +17,7 @@ public interface MemberDao {
 	/**
 	 * 회원정보 수정
 	 */
-	void update(Member member);
+	//void update(Member member);
 
 	/**
 	 * 회원 목록
@@ -28,5 +28,10 @@ public interface MemberDao {
 	 * 회원 수
 	 */
 	int countAll();
+	
+	/**
+	 * 로그인
+	 */
+	Member selectByLogin(String email, String password);
 	
 }

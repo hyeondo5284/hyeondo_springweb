@@ -25,10 +25,12 @@ public class LoginController {
 	/**
 	 * 로그인 화면
 	 */
+	
 	@GetMapping("/loginForm")
 	public String form() {
 		return "login/loginForm";
 	}
+	
 
 	/**
 	 * 로그인을 실행

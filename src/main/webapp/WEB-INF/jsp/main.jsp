@@ -7,9 +7,8 @@
 <title>메인</title>
 </head>
 <body>
-	<p>환영합니다.</p>
+	<h2>Welcome to Springweb!</h2>
 	<!-- 로그인 여부에 따라 분기 -->
-	<!-- switch -->
 	<c:choose>
 		<c:when test="${!empty sessionScope.MEMBER }">
 			<!-- 로그인 했을 경우 -->

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 public class ArticleController {
@@ -49,19 +50,24 @@ public class ArticleController {
 	/**
 	 * 글 등록 화면
 	 */
+	/*
 	@GetMapping("/article/addForm")
-	public String articleAddForm(HttpSession session) {
+	public String articleAddForm(HttpSession session, @SessionAttribute("MEMBER") Member member) {
+		
 		Object memberObj = session.getAttribute("MEMBER");
 		if(memberObj == null)
 			return "redirect:/app/loginForm";
+		
 		return "article/addForm";
 	}
+	*/
 
 	/**
 	 * 글 등록
 	 */
 	@PostMapping("/article/add")
-	public String articleAdd(Article article, HttpSession session) {
+	public String articleAdd(Article article, HttpSession session, @SessionAttribute("MEMBER") Member member) {
+		/*
 		Object memberObj = session.getAttribute("MEMBER");
 		if(memberObj == null)
 			return "redirect:/loginForm";
@@ -69,9 +75,24 @@ public class ArticleController {
 		//article.setUserId("2015041091");
 		//article.setName("이현도");
 		Member member = (Member) memberObj;
+		*/
 		article.setUserId(member.getMemberId());
 		article.setName(member.getName());
 		articleDao.addArticle(article);
 		return "redirect:/app/article/list";
 	}
+	
+	/**
+	 * 글 수정
+	 */
+	@GetMapping("/article/update")
+	public String articleUpdate(Article article, HttpSession session, @SessionAttribute("MEMBER") Member member) {
+		
+		return null;
+	}
+	
+	/**
+	 * 글 삭제
+	 */
+	
 }

@@ -69,4 +69,6 @@ public class RegisterController {
 		model.addAttribute("members", memberList);
 		return "members";
 	}
+	
+	
 }

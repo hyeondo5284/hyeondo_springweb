@@ -34,4 +34,9 @@ public interface MemberDao {
 	 */
 	Member selectByLogin(String email, String password);
 	
+	/**
+	 * 비밀번호 변경
+	 */
+	int changePassword(String memberId, String currentPassword,
+			String newPassword);
 }

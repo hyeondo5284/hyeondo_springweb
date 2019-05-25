@@ -2,8 +2,8 @@ package org.hyeondo.article;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hyeondo.book.chap11.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +19,8 @@ public class ArticleController {
 	@Autowired
 	ArticleDao articleDao;
 
+	Logger logger = LogManager.getLogger();
+	
 	/**
 	 * 글 목록
 	 */
@@ -66,7 +68,7 @@ public class ArticleController {
 	 * 글 등록
 	 */
 	@PostMapping("/article/add")
-	public String articleAdd(Article article, HttpSession session, @SessionAttribute("MEMBER") Member member) {
+	public String articleAdd(Article article, @SessionAttribute("MEMBER") Member member) {
 		/*
 		Object memberObj = session.getAttribute("MEMBER");
 		if(memberObj == null)
@@ -83,16 +85,39 @@ public class ArticleController {
 	}
 	
 	/**
+	 * 글 수정 화면
+	 */
+	@GetMapping("/article/updateForm")
+	public String articleUpdateForm(@RequestParam("articleId") String articleId,
+			Model model, @SessionAttribute("MEMBER") Member member) {
+		Article article = articleDao.getArticle(articleId);
+		if(article.getUserId().equals(member.getMemberId())) {
+			model.addAttribute("article", article);
+			return "/article/updateForm";
+		} else {
+			return "redirect:/app/article/view?articleId=" + articleId + "&mode=FAILURE";
+		}
+	}
+	
+	/**
 	 * 글 수정
 	 */
-	@GetMapping("/article/update")
-	public String articleUpdate(Article article, HttpSession session, @SessionAttribute("MEMBER") Member member) {
-		
-		return null;
+	@PostMapping("/article/update")
+	public String articleUpdate(@RequestParam("articleId") String articleId, @RequestParam("title") String title, @RequestParam("content") String content) {
+		articleDao.updateArticle(title, content, articleId);
+		return "redirect:/app/article/list";
 	}
 	
 	/**
 	 * 글 삭제
 	 */
-	
+	@GetMapping("article/delete")
+	public String articleDelete(@RequestParam("articleId") String articleId, @SessionAttribute("MEMBER") Member member) {
+		Article article = articleDao.getArticle(articleId);
+		if(article.getUserId().equals(member.getMemberId())) {
+			articleDao.deleteArticle(articleId);
+			return "redirect:/app/article/list";
+		}
+		return "redirect:/app/article/view?articleId=" + articleId + "&mode=FAILURE";
+	}
 }

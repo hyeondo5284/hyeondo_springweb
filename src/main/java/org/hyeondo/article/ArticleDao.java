@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArticleDao {
 	
-	static final String LIST_ARTICLES = "select articleId, title, userId, name, left(cdate,16) cdate from article order by articleId desc limit ?,?";
+	static final String LIST_ARTICLES = "select articleId, title, userId, name, left(cdate,16) cdate, left(udate, 16) udate from article order by articleId desc limit ?,?";
 
 	static final String COUNT_ARTICLES = "select count(articleId) from article";
 

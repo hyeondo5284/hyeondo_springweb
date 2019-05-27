@@ -38,6 +38,7 @@ th {
 				<th>제목</th>
 				<th>등록자</th>
 				<th>등록일시</th>
+				<th>수정일시</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -47,6 +48,7 @@ th {
 					<td><a href="./app/article/view?articleId=${article.articleId }">${article.title }</a></td>
 					<td>${article.name }</td>
 					<td>${article.cdate }</td>
+					<td>${article.udate }</td>
 				</tr>
 			</c:forEach>
 		</tbody>

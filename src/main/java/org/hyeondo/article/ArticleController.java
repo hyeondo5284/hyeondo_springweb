@@ -54,12 +54,7 @@ public class ArticleController {
 	 */
 	/*
 	@GetMapping("/article/addForm")
-	public String articleAddForm(HttpSession session, @SessionAttribute("MEMBER") Member member) {
-		
-		Object memberObj = session.getAttribute("MEMBER");
-		if(memberObj == null)
-			return "redirect:/app/loginForm";
-		
+	public String articleAddForm(HttpSession session) {
 		return "article/addForm";
 	}
 	*/
@@ -69,15 +64,6 @@ public class ArticleController {
 	 */
 	@PostMapping("/article/add")
 	public String articleAdd(Article article, @SessionAttribute("MEMBER") Member member) {
-		/*
-		Object memberObj = session.getAttribute("MEMBER");
-		if(memberObj == null)
-			return "redirect:/loginForm";
-		
-		//article.setUserId("2015041091");
-		//article.setName("이현도");
-		Member member = (Member) memberObj;
-		*/
 		article.setUserId(member.getMemberId());
 		article.setName(member.getName());
 		articleDao.addArticle(article);
@@ -88,36 +74,48 @@ public class ArticleController {
 	 * 글 수정 화면
 	 */
 	@GetMapping("/article/updateForm")
-	public String articleUpdateForm(@RequestParam("articleId") String articleId,
+	public void updateForm(@RequestParam("articleId") String articleId,
 			Model model, @SessionAttribute("MEMBER") Member member) {
 		Article article = articleDao.getArticle(articleId);
-		if(article.getUserId().equals(member.getMemberId())) {
-			model.addAttribute("article", article);
-			return "/article/updateForm";
-		} else {
-			return "redirect:/app/article/view?articleId=" + articleId + "&mode=FAILURE";
-		}
+		if (!member.getMemberId().equals(article.getUserId()))
+			// 자신의 글이 아니면
+			throw new RuntimeException("No Authority!");
+
+		model.addAttribute("article", article);
 	}
 	
 	/**
 	 * 글 수정
 	 */
 	@PostMapping("/article/update")
-	public String articleUpdate(@RequestParam("articleId") String articleId, @RequestParam("title") String title, @RequestParam("content") String content) {
-		articleDao.updateArticle(title, content, articleId);
-		return "redirect:/app/article/list";
+	public String update(Article article,
+			@SessionAttribute("MEMBER") Member member) {
+		article.setUserId(member.getMemberId());
+		int updatedRows = articleDao.updateArticle(article);
+
+		// 권한 체크 : 글이 수정되었는지 확인
+		if (updatedRows == 0)
+			// 글이 수정되지 않음. 자신이 쓴 글이 아님
+			throw new RuntimeException("No Authority!");
+
+		return "redirect:/app/article/view?articleId=" + article.getArticleId();
 	}
 	
 	/**
 	 * 글 삭제
 	 */
-	@GetMapping("article/delete")
-	public String articleDelete(@RequestParam("articleId") String articleId, @SessionAttribute("MEMBER") Member member) {
-		Article article = articleDao.getArticle(articleId);
-		if(article.getUserId().equals(member.getMemberId())) {
-			articleDao.deleteArticle(articleId);
-			return "redirect:/app/article/list";
-		}
-		return "redirect:/app/article/view?articleId=" + articleId + "&mode=FAILURE";
+	@GetMapping("/article/delete")
+	public String delete(@RequestParam("articleId") String articleId,
+			@SessionAttribute("MEMBER") Member member) {
+		int updatedRows = articleDao.deleteArticle(articleId,
+				member.getMemberId());
+
+		// 권한 체크 : 글이 삭제되었는지 확인
+		if (updatedRows == 0)
+			// 글이 삭제되지 않음. 자신이 쓴 글이 아님
+			throw new RuntimeException("No Authority!");
+
+		logger.debug("글을 삭제했습니다. articleId={}", articleId);
+		return "redirect:/app/article/list";
 	}
 }

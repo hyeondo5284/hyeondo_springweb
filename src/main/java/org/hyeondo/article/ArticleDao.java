@@ -11,18 +11,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArticleDao {
 	
-	static final String LIST_ARTICLES = "select articleId, title, userId, name, left(cdate,16) cdate, left(udate, 16) udate from article order by articleId desc limit ?,?";
+	static final String LIST_ARTICLES = "select articleId, title, userId, name, left(cdate,16) cdate from article order by articleId desc limit ?,?";
 
 	static final String COUNT_ARTICLES = "select count(articleId) from article";
 
 	static final String GET_ARTICLE = "select articleId, title, content, userId, name, left(cdate,16) cdate, udate from article where articleId=?";
 
 	static final String ADD_ARTICLE = "insert article(title,content,userId,name) values(?,?,?,?)";
-	
-	static final String UPDATE_ARTICLE = "update article set title=?, content=? where articleId=?";
-	
-	static final String DELETE_ARTICLE = "delete from article where articleId=?";
-	
+
+	static final String UPDATE_ARTICLE = "update article set title=?, content=? where (articleId, userId) = (?,?)";
+
+	static final String DELETE_ARTICLE = "delete from article where (articleId, userId) = (?,?)";
+
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
@@ -30,7 +30,7 @@ public class ArticleDao {
 			Article.class);
 
 	/**
-	 * 글목록
+	 * 글 목록
 	 */
 	public List<Article> listArticles(int offset, int count) {
 		return jdbcTemplate.query(LIST_ARTICLES, articleRowMapper, offset,
@@ -45,7 +45,7 @@ public class ArticleDao {
 	}
 
 	/**
-	 * 글조회
+	 * 글 조회
 	 */
 	public Article getArticle(String articleId) {
 		return jdbcTemplate.queryForObject(GET_ARTICLE, articleRowMapper,
@@ -53,24 +53,26 @@ public class ArticleDao {
 	}
 
 	/**
-	 * 글등록
+	 * 글 등록
 	 */
 	public int addArticle(Article article) {
 		return jdbcTemplate.update(ADD_ARTICLE, article.getTitle(),
 				article.getContent(), article.getUserId(), article.getName());
 	}
-	
+
 	/**
 	 * 글 수정
 	 */
-	public int updateArticle(String articleId, String title, String content) {
-		return jdbcTemplate.update(UPDATE_ARTICLE, articleId, title, content);
+	public int updateArticle(Article article) {
+		return jdbcTemplate.update(UPDATE_ARTICLE, article.getTitle(),
+				article.getContent(), article.getArticleId(),
+				article.getUserId());
 	}
-	
+
 	/**
 	 * 글 삭제
 	 */
-	public int deleteArticle(String articleId) {
-		return jdbcTemplate.update(DELETE_ARTICLE, articleId);
+	public int deleteArticle(String articleId, String userId) {
+		return jdbcTemplate.update(DELETE_ARTICLE, articleId, userId);
 	}
 }

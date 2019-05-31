@@ -1,3 +1,4 @@
+/**
 package org.hyeondo.book.chap11;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,9 +13,10 @@ public class DefaultMappingController {
 	
 	/**
 	 * 다른 컴트롤러에서 매핑되지 않은 URL은 이 메서드를 실행 ex)main, step1
-	 */
+	 *
 	@RequestMapping("/**")
 	public void mapDefault() {
 		logger.debug("Default mapping.");
 	}
 }
+*/

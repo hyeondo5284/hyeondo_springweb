@@ -8,7 +8,7 @@ public class Letter {
 	String senderId;
 	String senderName;
 	String receiverId;
-	String recitverName;
+	String receiverName;
 	String cdate;
 	public String getLetterId() {
 		return letterId;
@@ -46,11 +46,11 @@ public class Letter {
 	public void setReceiverId(String receiverId) {
 		this.receiverId = receiverId;
 	}
-	public String getRecitverName() {
-		return recitverName;
+	public String getReceiverName() {
+		return receiverName;
 	}
-	public void setRecitverName(String recitverName) {
-		this.recitverName = recitverName;
+	public void setReceiverName(String receiverName) {
+		this.receiverName = receiverName;
 	}
 	public String getCdate() {
 		return cdate;
@@ -72,7 +72,7 @@ public class Letter {
 	@Override
 	public String toString() {
 		return "Letter [letterId=" + letterId + ", title=" + title + ", content=" + content + ", senderId=" + senderId
-				+ ", senderName=" + senderName + ", receiverId=" + receiverId + ", recitverName=" + recitverName
+				+ ", senderName=" + senderName + ", receiverId=" + receiverId + ", receiverName=" + receiverName
 				+ ", cdate=" + cdate + "]";
 	}
 }

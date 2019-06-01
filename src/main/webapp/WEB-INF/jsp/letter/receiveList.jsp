@@ -3,7 +3,7 @@
 <html>
 <head>
 <base href="${pageContext.request.contextPath }/" />
-<title>게시판</title>
+<title>받은 편지함</title>
 <style type="text/css">
 table {
 	margin-top: 10px;
@@ -22,12 +22,9 @@ th {
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/header.jsp"%>
-	<h2>글 목록</h2>
-	<p>
-		<a href="./app/article/addForm">글쓰기</a>
-	</p>
+	<h2>받은 편지 목록</h2>
 	<p>전체 ${totalCount }건</p>
-	<form action="./app/article/list">
+	<form action="./app/letter/receiveList">
 		<input type="number" name="page" value="${param.page }" placeholder="페이지"
 			min="1" max="${totalCount / 100 + 1 }" step="1" style="width: 50px;">
 		<button type="submit">조회</button>
@@ -35,19 +32,21 @@ th {
 	<table>
 		<thead>
 			<tr>
-				<th>글번호</th>
+				<th>편지 번호</th>
 				<th>제목</th>
-				<th>등록자</th>
-				<th>등록일시</th>
+				<th>보낸 사람 번호</th>
+				<th>보낸 사람</th>
+				<th>받은 날짜</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="article" items="${articleList}">
+			<c:forEach var="letter" items="${receiveList}">
 				<tr>
-					<td><a href="./app/article/view?articleId=${article.articleId }">${article.articleId }</a></td>
-					<td><a href="./app/article/view?articleId=${article.articleId }">${article.title }</a></td>
-					<td>${article.name }</td>
-					<td>${article.cdate }</td>
+					<td><a href="./app/letter/view?letterId=${letter.letterId }">${letter.letterId }</a></td>
+					<td><a href="./app/letter/view?letterId=${letter.letterId }">${letter.title }</a></td>
+					<td>${letter.senderId }</td>
+					<td>${letter.senderName }</td>
+					<td>${letter.cdate }</td>
 				</tr>
 			</c:forEach>
 		</tbody>

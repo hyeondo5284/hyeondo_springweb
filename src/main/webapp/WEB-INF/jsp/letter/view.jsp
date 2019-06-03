@@ -15,7 +15,7 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/header.jsp"%>
-	<h2>메일 보기</h2>
+	<h2>편지 보기</h2>
 	<p>
 		<a href="./app/letter/sendForm?receiverId=${letter.receiverId }&receiverName=${letter.receiverName }">편지 작성</a>
 		<a href="./app/letter/delete?letterId=${letter.letterId }"

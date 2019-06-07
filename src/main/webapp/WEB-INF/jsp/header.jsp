@@ -2,13 +2,13 @@
 <header>
 	<p>
 		<span><a href="./">홈</a></span> | <span><a href="./app/members">회원목록</a></span>
-		| <span><a href="./app/article/list">게시판</a></span> |
+		| <span><a href="./app/article/list">게시판</a></span> | <span><a href="./app/letter/receiveList">받은 편지함</a></span> 
+		| <span><a href="./app/letter/sendList">보낸 편지함</a></span> | 
 		<!-- 로그인 여부에 따라 분기 -->
 		<c:choose>
 			<c:when test="${!empty sessionScope.MEMBER }">
 				<!-- 로그인 했을 경우 -->
-				<span><a href="./app/member/memberInfo">${MEMBER.name }</a></span> | <span><a href="./app/letter/receiveList">받은 편지함</a></span> | 
-				<span><a href="./app/letter/sendList">보낸 편지함</a></span> | <span><a href="./app/logout">로그아웃</a></span>
+				<span><a href="./app/member/memberInfo">${MEMBER.name }</a></span> | <span><a href="./app/logout">로그아웃</a></span>
 			</c:when>
 			<c:otherwise>
 				<!-- 로그인 하지 않았을 경우 -->

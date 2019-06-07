@@ -19,7 +19,10 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
 			return true;
 
 		// 세션에 member가 없을 경우 로그인 화면으로
-		response.sendRedirect(request.getContextPath() + "/app/loginForm");
+		String requestURL = request.getRequestURL().toString();
+		String queryString = request.getQueryString();
+		String returnUrl = queryString == null ? requestURL : requestURL + "?" + queryString;
+		response.sendRedirect(request.getContextPath() + "/app/loginForm?returnUrl=" + returnUrl);
 		return false;
 	}
 }

@@ -26,26 +26,23 @@ th {
 	<p>전체 ${totalCount }건</p>
 	<form action="./app/letter/receiveList">
 		<input type="number" name="page" value="${param.page }" placeholder="페이지"
-			min="1" max="${totalCount / 100 + 1 }" step="1" style="width: 50px;">
+			min="1" max="${totalCount / 10 + 1 }" step="1" style="width: 50px;">
 		<button type="submit">조회</button>
 	</form>
 	<table>
 		<thead>
 			<tr>
-				<th>편지 번호</th>
+				<th>보낸이</th>
 				<th>제목</th>
-				<th>보낸 사람 번호</th>
-				<th>보낸 사람</th>
-				<th>받은 날짜</th>
+				<th>보낸시간</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="letter" items="${receiveList}">
+			<c:forEach var="letter" items="${letters}">
 				<tr>
-					<td><a href="./app/letter/view?letterId=${letter.letterId }">${letter.letterId }</a></td>
+					<td><a
+						href="./app/letter/sendForm?receiverId=${letter.senderId }&receiverName=${letter.senderName}">${letter.senderId }:${letter.senderName }</a></td>
 					<td><a href="./app/letter/view?letterId=${letter.letterId }">${letter.title }</a></td>
-					<td>${letter.senderId }</td>
-					<td>${letter.senderName }</td>
 					<td>${letter.cdate }</td>
 				</tr>
 			</c:forEach>

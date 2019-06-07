@@ -36,7 +36,7 @@ public class LetterController {
 		List<Letter> receiveList = letterDao.listReceiveLetters(member.getMemberId(), offset, COUNT);
 		int totalCount = letterDao.getReceiveLettersCount(member.getMemberId());
 		model.addAttribute("totalCount", totalCount);
-		model.addAttribute("receiveList", receiveList);
+		model.addAttribute("letters", receiveList);
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class LetterController {
 		List<Letter> sendList = letterDao.listSendLetters(member.getMemberId(), offset, COUNT);
 		int totalCount = letterDao.getSendLettersCount(member.getMemberId());
 		model.addAttribute("totalCount", totalCount);
-		model.addAttribute("sendList", sendList);
+		model.addAttribute("letters", sendList);
 	}
 	
 	/**
@@ -70,6 +70,7 @@ public class LetterController {
 	/**
 	 * 편지 작성 화면
 	 */
+	/*
 	@GetMapping("/letter/sendForm")
 	public void letterSendForm(@RequestParam("receiverId") String receiverId, @RequestParam("receiverName") String receiverName,
 			Model model, Letter letter) {
@@ -77,13 +78,13 @@ public class LetterController {
 		letter.setReceiverName(receiverName);
 		model.addAttribute("letter", letter);
 	}
+	*/
 	
 	/**
 	 * 편지 작성
 	 */
 	@PostMapping("/letter/send")
-	public String letterSend(@RequestParam("receiverId") String receiverId, @RequestParam("receiverName") String receiverName,
-			Letter letter, @SessionAttribute("MEMBER") Member member) {
+	public String letterSend(Letter letter, @SessionAttribute("MEMBER") Member member) {
 		letter.setSenderId(member.getMemberId());
 		letter.setSenderName(member.getName());
 		letterDao.sendLetter(letter);
@@ -94,7 +95,8 @@ public class LetterController {
 	 * 편지 삭제
 	 */
 	@GetMapping("/letter/delete")
-	public String delete(@RequestParam("letterId") String letterId,
+	public String delete(@RequestParam(value = "mode", required = false) String mode, 
+			@RequestParam("letterId") String letterId,
 			@SessionAttribute("MEMBER") Member member) {
 		int updatedRows = letterDao.deleteLetter(letterId,
 				member.getMemberId());
@@ -103,7 +105,10 @@ public class LetterController {
 		if (updatedRows == 0)
 			// 글이 삭제되지 않음. 자신이 쓴 글이 아님
 			throw new RuntimeException("No Authority!");
-
-		return "redirect:/app/letter/receiveList";
+		
+		if("SENT".equals(mode))
+			return "redirect:/app/letter/sendList";
+		else
+			return "redirect:/app/letter/receiveList";
 	}
 }

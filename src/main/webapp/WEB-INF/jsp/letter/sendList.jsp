@@ -40,8 +40,7 @@ th {
 		<tbody>
 			<c:forEach var="letter" items="${letters}">
 				<tr>
-					<td><a
-						href="./app/letter/sendForm?receiverId=${letter.receiverId }&receiverName=${letter.receiverName}">${letter.receiverId }:${letter.receiverName }</a></td>
+					<td><a href="./app/letter/sendForm?receiverId=${letter.receiverId }&receiverName=${letter.receiverName}">${letter.receiverId }:${letter.receiverName }</a></td>
 					<td><a href="./app/letter/view?letterId=${letter.letterId }&mode=SENT">${letter.title }</a></td>
 					<td>${letter.cdate }</td>
 				</tr>

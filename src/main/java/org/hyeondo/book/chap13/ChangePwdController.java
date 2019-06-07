@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 /**
- * p.366 [리스트 13.17] ChangePwdController 수정<br/>
+ * p.366 [리스트 13.17] ChangePwdController 수정
  * ChangePasswordService를 만들지 않고 컨트롤러에서 직접 Dao를 호출함
  */
 @Controller

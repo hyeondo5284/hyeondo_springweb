@@ -25,6 +25,7 @@
 				<a href="./app/letter/receiveList">목록</a>
 			</c:otherwise>
 		</c:choose>
+		<a href="./app/letter/sendForm?receiverId=${letter.receiverId }&receiverName=${letter.receiverName}">답장</a>
 		<a href="./app/letter/delete?letterId=${letter.letterId }&mode=${param.mode}"
 			onclick="return confirmDelete();">삭제</a>
 	</p>
